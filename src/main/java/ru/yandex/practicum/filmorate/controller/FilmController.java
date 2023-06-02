@@ -37,7 +37,7 @@ public class FilmController {
     @PutMapping
     public Film putFilm(@Valid @RequestBody Film film) {
         validateFilm(film);
-        if(!films.containsKey(film.getId())) {
+        if (!films.containsKey(film.getId())) {
             throw new ValidationException("Такого фильма не существует");
         }
         log.info("Информация о фильме обновлена, id: {}, название: {}", film.getId(), film.getName());
@@ -46,15 +46,15 @@ public class FilmController {
     }
 
     public void validateFilm(@RequestBody Film film) {
-        if(film.getReleaseDate().isBefore(releaseBefore)) {
+        if (film.getReleaseDate().isBefore(releaseBefore)) {
             log.warn("Дата выхода фильма: {}", film.getReleaseDate());
             throw new ValidationException("Дата релиза не должна быть раньше 28 декабря 1895 года");
         }
-        if(film.getDuration() < 0) {
+        if (film.getDuration() < 0) {
             log.warn("Продолжительность фильма: {}", film.getDuration());
             throw new ValidationException("Продолжительность фильма должна быть положительной");
         }
-        if(film.getDescription().length() > 200) {
+        if (film.getDescription().length() > 200) {
             log.warn("Описание фильма: {}", film.getDescription());
             throw new ValidationException("Максимальная длина описания должна быть 200 символов");
         }

@@ -35,7 +35,7 @@ public class UserController {
     @PutMapping
     public User putUser(@Valid @RequestBody User user) {
         validateUser(user);
-        if(!users.containsKey(user.getId())) {
+        if (!users.containsKey(user.getId())) {
             throw new ValidationException("Такого пользователя не существует");
         }
         log.info("Информация о пользователе обновлена, id: {}, логин: {}", user.getId(), user.getLogin());
@@ -45,14 +45,14 @@ public class UserController {
 
 
     public void validateUser(@RequestBody User user) {
-        if(user.getLogin().contains(" ")) {
+        if (user.getLogin().contains(" ")) {
             log.warn("Логин пользователя: {}", user.getLogin());
             throw new ValidationException("Логин не может содержать пробелы");
         }
-        if(user.getName() == null || user.getName().isBlank()) {
+        if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
-        if(user.getBirthday().isAfter(LocalDate.now())) {
+        if (user.getBirthday().isAfter(LocalDate.now())) {
             log.warn("Введенная дата рождения: {}", user.getBirthday());
             throw new ValidationException("Дата рождения не может быть в будущем");
         }
