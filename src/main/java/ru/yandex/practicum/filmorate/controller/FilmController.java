@@ -31,6 +31,7 @@ public class FilmController {
 
     @GetMapping
     public Collection<Film> getAllFilms() {
+        log.info("Текущее количество фильмов: {}", films.size());
         return films.values();
     }
 

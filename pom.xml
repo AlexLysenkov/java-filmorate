@@ -12,7 +12,8 @@
 	<artifactId>filmorate</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>filmorate</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Бэкенд для сервиса, который будет работать с фильмами и оценками пользователей, а также возвращать
+		топ-5 фильмов</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>

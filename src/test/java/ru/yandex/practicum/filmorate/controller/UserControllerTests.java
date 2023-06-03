@@ -2,6 +2,8 @@ package ru.yandex.practicum.filmorate.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.ConstraintViolation;
@@ -12,15 +14,12 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest
 public class UserControllerTests {
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    @Autowired
     private UserController userController;
     User user;
-
-    @BeforeEach
-    public void setUp() {
-        userController = new UserController();
-    }
 
     @Test
     void userEmptyNameTest() {

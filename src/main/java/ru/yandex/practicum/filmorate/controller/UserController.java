@@ -29,6 +29,7 @@ public class UserController {
 
     @GetMapping
     public Collection<User> getAllUsers() {
+        log.info("Текущее количество пользователей: {}", users.size());
         return users.values();
     }
 

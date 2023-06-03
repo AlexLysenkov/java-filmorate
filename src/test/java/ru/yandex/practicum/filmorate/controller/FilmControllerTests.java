@@ -2,6 +2,8 @@ package ru.yandex.practicum.filmorate.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
@@ -14,15 +16,12 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@SpringBootTest
 public class FilmControllerTests {
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+    @Autowired
     private FilmController filmController;
-    Film film = new Film("test", "test", LocalDate.of(1860,5,25), 45);
-
-    @BeforeEach
-    public void setUp() {
-        filmController = new FilmController();
-    }
+    Film film;
 
     @Test
     void dateBefore1895() {
