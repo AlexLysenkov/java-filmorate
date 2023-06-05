@@ -7,9 +7,7 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -20,8 +18,8 @@ public class InMemoryFilmStorage implements FilmStorage {
     private final Map<Integer, Film> films = new HashMap<>();
 
     @Override
-    public Collection<Film> getAllFilms() {
-        return films.values();
+    public List<Film> getAllFilms() {
+        return new ArrayList<>(films.values());
     }
 
     @Override
@@ -76,7 +74,7 @@ public class InMemoryFilmStorage implements FilmStorage {
                 .collect(Collectors.toList());
     }
 
-    public void validateFilm(Film film) {
+    private void validateFilm(Film film) {
         if (film.getReleaseDate().isBefore(releaseBefore)) {
             log.warn("Дата выхода фильма: {}", film.getReleaseDate());
             throw new ValidationException("Дата релиза не должна быть раньше 28 декабря 1895 года");

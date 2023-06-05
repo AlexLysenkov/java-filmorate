@@ -7,9 +7,10 @@ import ru.yandex.practicum.filmorate.exception.ObjectNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static ru.yandex.practicum.filmorate.utils.Constants.USER_NOT_FOUND;
 
 @Service
 @Slf4j
@@ -21,7 +22,7 @@ public class UserService {
         this.userStorage = userStorage;
     }
 
-    public Collection<User> getAllUsers() {
+    public List<User> getAllUsers() {
         return userStorage.getAllUsers();
     }
 
@@ -34,43 +35,25 @@ public class UserService {
     }
 
     public User getUserById(int userId) {
-        if (!userStorage.getUsers().containsKey(userId)) {
-            log.warn(String.format("Фильм с id = %d не существует", userId));
-            throw new ObjectNotFoundException(String.format("Фильм с id = %d не существует", userId));
-        }
+        userNotFound(userId);
         return userStorage.getUserById(userId);
     }
 
     public User deleteUserById(int userId) {
-        if (!userStorage.getUsers().containsKey(userId)) {
-            log.warn(String.format("Фильм с id = %d не существует", userId));
-            throw new ObjectNotFoundException(String.format("Фильм с id = %d не существует", userId));
-        }
+        userNotFound(userId);
         return userStorage.deleteUserById(userId);
     }
 
     public void addFriends(int firstId, int secondId) {
-        if (!userStorage.getUsers().containsKey(firstId)) {
-            log.warn("Id пользователя: {}", firstId);
-            throw new ObjectNotFoundException("Такого пользователя не существует");
-        }
-        if (!userStorage.getUsers().containsKey(secondId)) {
-            log.warn("Id пользователя: {}", secondId);
-            throw new ObjectNotFoundException("Такого пользователя не существует");
-        }
+        userNotFound(firstId);
+        userNotFound(secondId);
         userStorage.getUserById(firstId).getFriends().add(secondId);
         userStorage.getUserById(secondId).getFriends().add(firstId);
     }
 
     public void removeFriends(int firstId, int secondId) {
-        if (!userStorage.getUsers().containsKey(firstId)) {
-            log.warn("Id пользователя: {}", firstId);
-            throw new ObjectNotFoundException("Такого пользователя не существует");
-        }
-        if (!userStorage.getUsers().containsKey(secondId)) {
-            log.warn("Id пользователя: {}", secondId);
-            throw new ObjectNotFoundException("Такого пользователя не существует");
-        }
+        userNotFound(firstId);
+        userNotFound(secondId);
         userStorage.getUserById(firstId).getFriends().remove(secondId);
         userStorage.getUserById(secondId).getFriends().remove(firstId);
     }
@@ -88,5 +71,12 @@ public class UserService {
                 .filter(id -> user2.getFriends().contains(id))
                 .map(userStorage::getUserById)
                 .collect(Collectors.toList());
+    }
+
+    private void userNotFound(int id) {
+        if (!userStorage.getUsers().containsKey(id)) {
+            log.warn(String.format(USER_NOT_FOUND, id));
+            throw new ObjectNotFoundException(String.format(USER_NOT_FOUND, id));
+        }
     }
 }

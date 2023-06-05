@@ -9,6 +9,9 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.util.Collection;
+import java.util.List;
+
+import static ru.yandex.practicum.filmorate.utils.Constants.FILM_NOT_FOUND;
 
 @Service
 @Slf4j
@@ -22,7 +25,7 @@ public class FilmService {
         this.userService = userService;
     }
 
-    public Collection<Film> getAllFilms() {
+    public List<Film> getAllFilms() {
         return filmStorage.getAllFilms();
     }
 
@@ -35,18 +38,12 @@ public class FilmService {
     }
 
     public Film getFilmById(int filmId) {
-        if (!filmStorage.getFilms().containsKey(filmId)) {
-            log.warn(String.format("Фильм с id = %d не существует", filmId));
-            throw new ObjectNotFoundException(String.format("Фильм с id = %d не существует", filmId));
-        }
+        filmNotFound(filmId);
         return filmStorage.getFilmById(filmId);
     }
 
     public Film deleteFilmById(int id) {
-        if (!filmStorage.getFilms().containsKey(id)) {
-            log.warn(String.format("Фильм с id = %d не существует", id));
-            throw new ObjectNotFoundException(String.format("Фильм с id = %d не существует", id));
-        }
+        filmNotFound(id);
         return filmStorage.deleteFilmById(id);
     }
 
@@ -64,5 +61,12 @@ public class FilmService {
 
     public Collection<Film> getPopularFilms(int count) {
         return filmStorage.getPopularFilms(count);
+    }
+
+    private void filmNotFound(int id) {
+        if (!filmStorage.getFilms().containsKey(id)) {
+            log.warn(String.format(FILM_NOT_FOUND, id));
+            throw new ObjectNotFoundException(String.format(FILM_NOT_FOUND, id));
+        }
     }
 }

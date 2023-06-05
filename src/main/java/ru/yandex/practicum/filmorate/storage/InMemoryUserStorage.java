@@ -2,15 +2,14 @@ package ru.yandex.practicum.filmorate.storage;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.filmorate.exception.ObjectNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+
+import static ru.yandex.practicum.filmorate.utils.Constants.USER_NOT_FOUND;
 
 @Slf4j
 @Component
@@ -19,8 +18,8 @@ public class InMemoryUserStorage implements UserStorage {
     private final Map<Integer, User> users = new HashMap<>();
 
     @Override
-    public Collection<User> getAllUsers() {
-        return users.values();
+    public List<User> getAllUsers() {
+        return new ArrayList<>(users.values());
     }
 
     @Override
@@ -35,8 +34,8 @@ public class InMemoryUserStorage implements UserStorage {
     public User updateUser(User user) {
         validateUser(user);
         if (!users.containsKey(user.getId())) {
-            log.warn("Id пользователя: {}", user.getId());
-            throw new ObjectNotFoundException("Такого пользователя не существует");
+            log.warn(String.format(USER_NOT_FOUND, user.getId()));
+            throw new ObjectNotFoundException(String.format(USER_NOT_FOUND, user.getId()));
         }
         users.put(user.getId(), user);
         return user;
@@ -57,7 +56,7 @@ public class InMemoryUserStorage implements UserStorage {
         return users.remove(id);
     }
 
-    public void validateUser(@RequestBody User user) {
+    private void validateUser(User user) {
         if (user.getLogin().contains(" ")) {
             log.warn("Логин пользователя: {}", user.getLogin());
             throw new ValidationException("Логин не может содержать пробелы");
