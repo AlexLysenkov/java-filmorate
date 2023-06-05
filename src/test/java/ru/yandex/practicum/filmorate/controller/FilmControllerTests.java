@@ -24,8 +24,9 @@ public class FilmControllerTests {
 
     @Test
     void dateBefore1895() {
-        film = new Film("test", "test", LocalDate.of(1860,5,25), 45);
-        assertThrows(ValidationException.class, () -> filmController.validateFilm(film));
+        film = new Film("test", "test", LocalDate.of(1860, 5, 25), 45);
+        ValidationException e = assertThrows(ValidationException.class, () -> filmController.createFilm(film));
+        assertEquals("Дата релиза не должна быть раньше 28 декабря 1895 года", e.getMessage());
     }
 
     @Test
