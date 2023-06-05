@@ -31,21 +31,21 @@ public class FilmControllerTests {
 
     @Test
     void emptyNameTest() {
-        film = new Film("", "test", LocalDate.of(1860,5,25), 45);
+        film = new Film("", "test", LocalDate.of(1860, 5, 25), 45);
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertEquals(1, violations.size());
     }
 
     @Test
     void emptyDescriptionTest() {
-        film = new Film("test", "", LocalDate.of(1860, 5,25), 45);
+        film = new Film("test", "", LocalDate.of(1860, 5, 25), 45);
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertEquals(1, violations.size());
     }
 
     @Test
     void symbolsLengthDescriptionTest() {
-        film = new Film("test", ("a").repeat(201), LocalDate.of(1860,5,25),
+        film = new Film("test", ("a").repeat(201), LocalDate.of(1860, 5, 25),
                 45);
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertEquals(1, violations.size());
@@ -53,7 +53,7 @@ public class FilmControllerTests {
 
     @Test
     void positiveDurationTest() {
-        film = new Film("test", "test", LocalDate.of(1860,5,25), -30);
+        film = new Film("test", "test", LocalDate.of(1860, 5, 25), -30);
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertEquals(1, violations.size());
     }
