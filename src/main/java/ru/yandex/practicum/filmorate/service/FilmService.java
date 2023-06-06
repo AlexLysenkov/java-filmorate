@@ -38,12 +38,12 @@ public class FilmService {
     }
 
     public Film getFilmById(int filmId) {
-        filmNotFound(filmId);
+        checkFilm(filmId);
         return filmStorage.getFilmById(filmId);
     }
 
     public Film deleteFilmById(int id) {
-        filmNotFound(id);
+        checkFilm(id);
         return filmStorage.deleteFilmById(id);
     }
 
@@ -63,7 +63,7 @@ public class FilmService {
         return filmStorage.getPopularFilms(count);
     }
 
-    private void filmNotFound(int id) {
+    private void checkFilm(int id) {
         if (!filmStorage.getFilms().containsKey(id)) {
             log.warn(String.format(FILM_NOT_FOUND, id));
             throw new ObjectNotFoundException(String.format(FILM_NOT_FOUND, id));

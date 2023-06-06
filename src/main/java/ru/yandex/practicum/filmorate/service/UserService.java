@@ -35,25 +35,25 @@ public class UserService {
     }
 
     public User getUserById(int userId) {
-        userNotFound(userId);
+        checkUser(userId);
         return userStorage.getUserById(userId);
     }
 
     public User deleteUserById(int userId) {
-        userNotFound(userId);
+        checkUser(userId);
         return userStorage.deleteUserById(userId);
     }
 
     public void addFriends(int firstId, int secondId) {
-        userNotFound(firstId);
-        userNotFound(secondId);
+        checkUser(firstId);
+        checkUser(secondId);
         userStorage.getUserById(firstId).getFriends().add(secondId);
         userStorage.getUserById(secondId).getFriends().add(firstId);
     }
 
     public void removeFriends(int firstId, int secondId) {
-        userNotFound(firstId);
-        userNotFound(secondId);
+        checkUser(firstId);
+        checkUser(secondId);
         userStorage.getUserById(firstId).getFriends().remove(secondId);
         userStorage.getUserById(secondId).getFriends().remove(firstId);
     }
@@ -73,7 +73,7 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    private void userNotFound(int id) {
+    private void checkUser(int id) {
         if (!userStorage.getUsers().containsKey(id)) {
             log.warn(String.format(USER_NOT_FOUND, id));
             throw new ObjectNotFoundException(String.format(USER_NOT_FOUND, id));
