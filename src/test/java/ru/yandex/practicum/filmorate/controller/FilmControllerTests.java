@@ -24,27 +24,28 @@ public class FilmControllerTests {
 
     @Test
     void dateBefore1895() {
-        film = new Film("test", "test", LocalDate.of(1860,5,25), 45);
-        assertThrows(ValidationException.class, () -> filmController.validateFilm(film));
+        film = new Film("test", "test", LocalDate.of(1860, 5, 25), 45);
+        ValidationException e = assertThrows(ValidationException.class, () -> filmController.createFilm(film));
+        assertEquals("Дата релиза не должна быть раньше 28 декабря 1895 года", e.getMessage());
     }
 
     @Test
     void emptyNameTest() {
-        film = new Film("", "test", LocalDate.of(1860,5,25), 45);
+        film = new Film("", "test", LocalDate.of(1860, 5, 25), 45);
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertEquals(1, violations.size());
     }
 
     @Test
     void emptyDescriptionTest() {
-        film = new Film("test", "", LocalDate.of(1860, 5,25), 45);
+        film = new Film("test", "", LocalDate.of(1860, 5, 25), 45);
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertEquals(1, violations.size());
     }
 
     @Test
     void symbolsLengthDescriptionTest() {
-        film = new Film("test", ("a").repeat(201), LocalDate.of(1860,5,25),
+        film = new Film("test", ("a").repeat(201), LocalDate.of(1860, 5, 25),
                 45);
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertEquals(1, violations.size());
@@ -52,7 +53,7 @@ public class FilmControllerTests {
 
     @Test
     void positiveDurationTest() {
-        film = new Film("test", "test", LocalDate.of(1860,5,25), -30);
+        film = new Film("test", "test", LocalDate.of(1860, 5, 25), -30);
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertEquals(1, violations.size());
     }

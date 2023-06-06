@@ -23,11 +23,11 @@ public class UserControllerTests {
     @Test
     void userEmptyNameTest() {
         user = new User("test@yandex.ru", "login", LocalDate.of(1965, 11, 23));
-        userController.validateUser(user);
+        userController.createUser(user);
         assertEquals("login", user.getName());
         User user1 = new User("test@yandex.ru", "login", LocalDate.of(1965, 11, 23));
         user1.setName(" ");
-        userController.validateUser(user1);
+        userController.createUser(user1);
         assertEquals("login", user1.getName());
     }
 
