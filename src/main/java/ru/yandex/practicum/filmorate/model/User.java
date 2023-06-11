@@ -1,5 +1,7 @@
 package ru.yandex.practicum.filmorate.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -11,8 +13,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@AllArgsConstructor
+@Builder
 public class User {
-    private int id;
+    private Integer id;
     @NotBlank
     @Email
     private final String email;

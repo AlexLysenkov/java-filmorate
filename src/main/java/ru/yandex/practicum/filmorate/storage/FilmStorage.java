@@ -4,7 +4,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 public interface FilmStorage {
     List<Film> getAllFilms();
@@ -13,9 +13,7 @@ public interface FilmStorage {
 
     Film updateFilm(Film film);
 
-    Film getFilmById(int filmId);
-
-    Map<Integer, Film> getFilms();
+    Optional<Film> getFilmById(int filmId);
 
     Film deleteFilmById(int id);
 
