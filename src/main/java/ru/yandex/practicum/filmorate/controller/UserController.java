@@ -59,7 +59,7 @@ public class UserController {
     @DeleteMapping("/{id}/friends/{friendId}")
     public void removeFriend(@PathVariable int id, @PathVariable int friendId) {
         log.info(String.format("Пользователи с id = %d, %d больше не друзья", id, friendId));
-        userService.removeFriends(id, friendId);
+        userService.removeFriend(id, friendId);
     }
 
     @GetMapping("{id}/friends")
