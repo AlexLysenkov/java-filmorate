@@ -21,7 +21,7 @@ import java.util.*;
 import static ru.yandex.practicum.filmorate.utils.Constants.FILM_NOT_FOUND;
 
 @Slf4j
-@Component("filmDbStorage")
+@Component
 @RequiredArgsConstructor
 public class FilmDbStorage implements FilmStorage {
     private final JdbcTemplate jdbcTemplate;
@@ -94,10 +94,10 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     @Override
-    public Film deleteFilmById(int id) {
+    public Optional<Film> deleteFilmById(int id) {
         Optional<Film> film = getFilmById(id);
         jdbcTemplate.update("DELETE FROM films WHERE film_id = ?", id);
-        return film.orElse(null);
+        return film;
     }
 
     @Override

@@ -46,12 +46,15 @@ public class FilmService {
     public Film getFilmById(int filmId) {
         return filmStorage.getFilmById(filmId).orElseThrow(() -> {
             log.warn(String.format(FILM_NOT_FOUND, filmId));
-            throw new ObjectNotFoundException(String.format(FILM_NOT_FOUND, filmId));
+            return new ObjectNotFoundException(String.format(FILM_NOT_FOUND, filmId));
         });
     }
 
     public Film deleteFilmById(int id) {
-        return filmStorage.deleteFilmById(id);
+        return filmStorage.deleteFilmById(id).orElseThrow(() -> {
+            log.warn(String.format(FILM_NOT_FOUND, id));
+            return new ObjectNotFoundException(String.format(FILM_NOT_FOUND, id));
+        });
     }
 
     public void getLike(int id, int userId) {

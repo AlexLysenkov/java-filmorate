@@ -43,7 +43,7 @@ public class UserService {
     public User getUserById(int userId) {
         return userStorage.getUserById(userId).orElseThrow(() -> {
             log.warn(String.format(USER_NOT_FOUND, userId));
-            throw new ObjectNotFoundException(String.format(USER_NOT_FOUND, userId));
+            return new ObjectNotFoundException(String.format(USER_NOT_FOUND, userId));
         });
     }
 
